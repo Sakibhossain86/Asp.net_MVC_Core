@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Tourist>
+
+<table  class="table table-bordered table-hover table-dark" id="touristTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.TouristName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TouristOccupation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TourPackage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr id="tourist_tr_@p.TouristId">
+                <td style="width:50px"><img src="~/Pictures/@p.TouristPicture" style="width:40px" class="img-thumbnail rounded-circle" /></td>
+                <td>
+                    @Html.DisplayFor(modelItem => p.TouristName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => p.BookingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => p.TouristOccupation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => p.TourPackage.PackageName)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="tourist" data-db-action="edit" data-tourist-id="@p.TouristId" data-controller-action="EditTourist"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="tourist" data-db-action="delete" data-tourist-id="@p.TouristId" data-controller-action="DeleteTourist"><i class="bi bi-trash"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

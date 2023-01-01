@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PackageFeature>
+
+<table  class="table table-bordered table-hover table-dark" id="packageFeatureTable">
+    <thead >
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransportMode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HotelBooking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TourPackage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr id="packagefeature_tr_@item.PackageFeatureId">
+            <td>
+                @Html.DisplayFor(modelItem => item.TransportMode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HotelBooking)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TourPackage.PackageName)
+            </td>
+           <td>
+                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="packagefeature" data-db-action="edit" data-packagefeature-id="@item.PackageFeatureId" data-controller-action="EditPackageFeature"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="packagefeature" data-db-action="delete" data-packagefeature-id="@item.PackageFeatureId" data-controller-action="DeletePackageFeature"><i class="bi bi-trash"></i></button>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TravelAgent>
+@{
+    int? id = (int?)ViewData["id"];
+    
+}
+
+    <table class="table table-bordered table-hover table-dark" id="travelagentTable">
+        <thead>
+            <tr>
+                <td></td>
+                
+                <th>Name</th>
+                <th>Email</th>
+                <th>Number</th>
+                <th>Address</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var p in Model)
+            {
+                <tr id="travelagent_tr_@p.TravelAgentId" class="@(id.HasValue && id == p.TravelAgentId ? "bg-info": "")">
+                <td><button type="button" class="btn btn-secondary btn-sm select @(id.HasValue && id == p.TravelAgentId ? "disabled": "")" data-travelagent-id="@p.TravelAgentId" >Select</button></td>
+                    <td>@p.AgentName</td>
+                    <td>@p.Email</td>
+                    <td>@p.PhoneNumber</td>
+                    <td>@p.AgentAddress</td>
+                    <td>
+                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="travelagent" data-db-action="edit" data-travelagent-id="@p.TravelAgentId" data-controller-action="EditTravelAgent"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="travelagent" data-db-action="delete" data-travelagent-id="@p.TravelAgentId" data-controller-action="DeleteTravelAgent"><i class="bi bi-trash"></i></button>
+                </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

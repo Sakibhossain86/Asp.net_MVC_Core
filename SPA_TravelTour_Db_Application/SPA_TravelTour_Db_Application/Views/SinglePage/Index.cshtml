@@ -1,0 +1,754 @@
+﻿@model DataViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row m-1">
+    <div class="col-6 border-end">
+        <h3 class="text-center">Travel Agents</h3>
+        <div class="d-flex justify-content-end mb-1">
+            <button class="btn btn-info btn-sm" id="addTAgents"><span class="bi bi-plus"></span> Add</button>
+        </div>
+        @await Html.PartialAsync("_TravelAgentTable", Model.TravelAgents ,new ViewDataDictionary(this.ViewData) { { "id", Model.SelectedAgentId } })
+    </div>
+    <div class="col-6 border-end">
+        <h3 class="text-center">Agent Tour Packages</h3>
+        <div class="d-flex justify-content-end mb-1">
+            <button class="btn btn-info btn-sm" id="addatp"><span class="bi bi-plus"></span> Add</button>
+        </div>
+        <div id="atdiv">
+            @await Html.PartialAsync("_AgentTourPackageTable", Model.AgentTourPackages)
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 border-end">
+        <h3 class="text-center">Tour Packages</h3>
+        <div class="d-flex justify-content-end mb-1">
+            <button class="btn btn-info btn-sm" id="addTourp"><span class="bi bi-plus"></span> Add</button>
+        </div>
+        @await Html.PartialAsync("_TourPackageTable", Model.TourPackages)
+    </div>
+    <div class="col-6 border-end">
+        <h3 class="text-center">Package Features</h3>
+        <div class="d-flex justify-content-end mb-1">
+            <button class="btn btn-info btn-sm" id="addfeature"><span class="bi bi-plus"></span> Add</button>
+        </div>
+        @await Html.PartialAsync("_PackageFeatureTable", Model.PackageFeatures)
+    </div>
+</div>
+<div class="row m-1">
+    <div class="col-12 border-end">
+    <h3 class="text-center">Tourists</h3>
+    <div class="d-flex justify-content-end mb-1">
+        <button class="btn btn-info btn-sm" id="addtourists"><span class="bi bi-plus"></span> Add</button>
+    </div>
+    @await Html.PartialAsync("_TouristTable", Model.Tourists)
+    </div>
+</div>
+<div class="modal" tabindex="-1" id="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="mtitle">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="mbody">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="save" class="btn btn-primary" form="f">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" id="delModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Confirm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure to delete this item?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="deleteItem">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Toast-->
+<div class="position-absolute bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="toastNotice" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto" id="toasthead">Bootstrap</strong>
+
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastbody">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
+</div>
+@section styles
+    {
+    <link rel="stylesheet" href="~/libs/picker/css/bootstrap-datepicker.standalone.css" />
+}
+@section scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/libs/picker/js/bootstrap-datepicker.js"></script>
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('modal'));
+        var delModal = new bootstrap.Modal(document.getElementById('delModal'));
+        var myAlert = document.getElementById('toastNotice');//select id of toast
+        var bsAlert = new bootstrap.Toast(myAlert);//inizialize it
+        var itemToWorkWith;
+        $(() => {
+            $(".date").datepicker();
+            //Order select start
+            $(document).on("click", "button.select", function() {
+                var travelAgentId = $(this).data("travelagent-id");
+                console.log(travelAgentId)
+                var previousSelected = $("tr.bg-info")
+                previousSelected.removeClass("bg-info");
+                previousSelected.find("button.btn").removeClass("disabled");
+                //$(this).parent().parent().addClass("bg-info");
+                $(this).closest("tr").addClass("bg-info");
+                $(this).closest("tr").find("button.btn").addClass("disabled");
+                $.ajax({
+                    type: "POST",
+                    url: "/SinglePage/GetSelectedAgentPackages/" + travelAgentId,
+                    success: r => {
+                        $("#atdiv").html(r);
+                    }
+                })
+            });
+            //Order select end
+            //Delete item start
+            $(document).on('click', 'button.del', function() {
+                itemToWorkWith = $(this);
+                delModal.show();
+                //console.log(`${dbType} ${dbAction} ${controllerAction}`);
+                //console.log(id);
+
+            });
+            $('#deleteItem').click(() => {
+                delModal.hide();
+                var dbType = itemToWorkWith.data("db-type");
+                var dbAction = itemToWorkWith.data("db-action");
+                var controllerAction = itemToWorkWith.data("controller-action");
+                var id = itemToWorkWith.data(`${dbType}-id`);
+                console.log(`${dbType} ${dbAction} ${controllerAction}`);
+                console.log(id);
+                console.log($(`#${dbType}_tr_${id}`))
+                $(`#${dbType}_tr_${id}`).remove();
+                if (dbType == 'agenttourpackage') {
+                    var tid = itemToWorkWith.data("travelagent-id");
+                    var pid = itemToWorkWith.data("tourpackage-id");
+                    $.ajax({
+                        type: 'POST',
+                        url: `/SinglePage/${controllerAction}/?tid=${tid}&pid=${pid}`,
+                        //data:{oid:oid, pid:pid},
+                        success: r => {
+                            if (r.success == true) {
+                                $("#toasthead").html("Success");
+                                $("#toastbody").html(r.message);
+
+                                bsAlert.show();
+                                $(`#${dbType}_tr_${tid}_${pid}`).remove();
+                            }
+                            else {
+                                $("#toasthead").html("Failed");
+                                $("#toastbody").html(r.message);
+
+                                bsAlert.show();
+                            }
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        type: 'POST',
+                        url: `/SinglePage/${controllerAction}/${id}`,
+                        success: r => {
+                            if (r.success == true) {
+                                $("#toasthead").html("Success");
+                                $("#toastbody").html(r.message);
+
+                                bsAlert.show();
+                                $(`#${dbType}_tr_${id}`).remove();
+                            }
+                            else {
+                                $("#toasthead").html("Failed");
+                                $("#toastbody").html(r.message);
+
+                                bsAlert.show();
+                            }
+                        }
+                    });
+                }
+            });
+            //Delete item end
+            //Edit action start
+            $(document).on('click', 'button.edit', function() {
+                var dbType = $(this).data("db-type");
+                var dbAction = $(this).data("db-action");
+                var controllerAction = $(this).data("controller-action");
+                var id = $(this).data(`${dbType}-id`);
+                //console.log(`${dbType} ${dbAction} ${controllerAction}`);
+                //console.log(id);
+                 if (dbType == 'agenttourpackage') {
+                        var tid = $(this).data("travelagent-id");
+                        var pid = $(this).data("tourpackage-id");
+                        $.ajax({
+                            type: "GET",
+                            url: `/SinglePage/${controllerAction}/?tid=${tid}&pid=${pid}`,
+                            success: r => {
+                                $("#mbody").html(r);
+                                $("#mtitle").html(`Edit ${dbType}`);
+
+                                myModal.show();
+                                var f = $("#f");
+                                //console.log(f);
+                                //f.removeData('validator');
+                                // f.removeData('unobtrusiveValidation');
+                                $.validator.unobtrusive.parse(f);
+                                if (dbType == 'tourist') {
+                                    $(".date").datepicker({
+                                        format: 'yyyy-mm-dd'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        $.ajax({
+                            type: "GET",
+                            url: `/SinglePage/${controllerAction}/${id}`,
+                            success: r => {
+                                $("#mbody").html(r);
+                                $("#mtitle").html(`Edit ${dbType}`);
+
+                                myModal.show();
+                                var f = $("#f");
+                                //console.log(f);
+                                //f.removeData('validator');
+                                // f.removeData('unobtrusiveValidation');
+                                $.validator.unobtrusive.parse(f);
+                                if (dbType == 'tourist') {
+                                    $(".date").datepicker({
+                                        format: 'yyyy-mm-dd'
+                                    });
+                                }
+                            }
+
+                        });
+                    }
+            });
+            $(document).on("click", "button.deloi-insert", function() {
+                if ($("button.deloi-insert").length < 2) return;
+                $(this).parent().parent().remove();
+            })
+            //Edit action end
+            //Add Customer start
+            $("#addTourp").click(() => {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("CreateTourPackage","SinglePage")",
+                    success: r => {
+                        $("#mbody").html(r);
+                        $("#mtitle").html("Add Tour Package");
+
+                        myModal.show();
+                        var f = $("#f");
+                        console.log(f)
+                        $.validator.unobtrusive.parse(f);
+                    }
+                });
+
+            });
+            $("#addTAgents").click(() => {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("CreateTravelAgent","SinglePage")",
+                    success: r => {
+                        $("#mbody").html(r);
+                        $("#mtitle").html("Add Travel Agent");
+
+                        myModal.show();
+                        var f = $("#f");
+                        console.log(f)
+                        $.validator.unobtrusive.parse(f);
+                    }
+                });
+
+            });
+            //Add Customer end
+            //Add product start
+            $("#addtourists").click(() => {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("CreateTourist","SinglePage")",
+                    success: r => {
+                        $("#mbody").html(r);
+                        $("#mtitle").html("Add Tourists");
+
+                        myModal.show();
+                        var f = $("#f");
+                        console.log(f)
+                        $.validator.unobtrusive.parse(f);
+                        $(".date").datepicker();
+                    }
+                });
+
+            });
+            $("#addatp").click(function() {
+                    var id = $('button.select.disabled').data("travelagent-id")
+                    $.ajax({
+                        type: "GET",
+                        url: "/SinglePage/CreateAgentTourPackages/" + id,
+                        success: r => {
+                            $("#mbody").html(r);
+                            $("#mtitle").html("Add Package");
+
+                            myModal.show();
+                            var f = $("#f");
+                            console.log(f);
+                            $.validator.unobtrusive.parse(f);
+                        }
+
+                    });
+                })
+            $("#addfeature").click(() => {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("CreatePackageFeature","SinglePage")",
+                    success: r => {
+                        $("#mbody").html(r);
+                        $("#mtitle").html("Add Features");
+
+                        myModal.show();
+                        var f = $("#f");
+                        console.log(f)
+                        $.validator.unobtrusive.parse(f);
+                    }
+                });
+
+            });
+            //Add product end
+            //Add order start
+
+            //Add order end
+            //Save click start
+            $("#save").click(function() {
+                var button = $(this);
+                var isValid = $("#f").valid();
+                //console.log(isValid);
+                if (isValid == true) {
+                    var dbType = $("#f").data("db-type");
+                    var dbAction = $("#f").data("db-action");
+                    var controllerAction = $("#f").data("controller-action");
+                    console.log(`${dbType} ${dbAction} ${controllerAction}`);
+                    var data = createData(dbType, dbAction);
+                    //console.log(data);
+                    if (dbType == "tourPackage") {
+
+                        $.ajax({
+                            url: `/SinglePage/${controllerAction}`,
+                            type: "POST",
+                            data: data,
+                            dataType: "json",
+                            success: r => {
+                                if (dbAction == "insert") {
+                                    $("#toasthead").html("Success");
+                                    $("#toastbody").html("Data inserted successfully");
+                                    myModal.hide();
+                                    bsAlert.show();
+                                    addToTable(dbType, r);
+
+                                    //replaceRow(dbType, `customer_tr_${r.customerID}`, dbAction);
+
+                                }
+                                if (dbAction == "edit") {
+                                    $("#toasthead").html("Success");
+                                    $("#toastbody").html("Data saved successfully");
+                                    myModal.hide();
+                                    bsAlert.show();
+
+
+                                    replaceRow(dbType, `tourpackage_tr_${r.tourPackageId}`, r);
+
+                                }
+
+                            },
+                            error: function(err) {
+                                alert(err.statusText);
+                                $("#toasthead").html("Failed");
+                                $("#toastbody").html("Failed to insert data");
+
+                                bsAlert.show();
+                            }
+                        });
+                    }
+                    if (dbType == "packageFeature") {
+
+                        $.ajax({
+                            url: `/SinglePage/${controllerAction}`,
+                            type: "POST",
+                            data: data,
+                            dataType: "json",
+                            success: r => {
+                                if (dbAction == "insert") {
+                                    $("#toasthead").html("Success");
+                                    $("#toastbody").html("Data inserted successfully");
+                                    myModal.hide();
+                                    bsAlert.show();
+                                    addToTable(dbType, r);
+
+                                    //replaceRow(dbType, `customer_tr_${r.customerID}`, dbAction);
+
+                                }
+                                if (dbAction == "edit") {
+                                    $("#toasthead").html("Success");
+                                    $("#toastbody").html("Data saved successfully");
+                                    myModal.hide();
+                                    bsAlert.show();
+
+
+                                    replaceRow(dbType, `packagefeature_tr_${r.packageFeatureId}`, r);
+
+                                }
+
+                            },
+                            error: function(err) {
+                                alert(err.statusText);
+                                $("#toasthead").html("Failed");
+                                $("#toastbody").html("Failed to insert data");
+
+                                bsAlert.show();
+                            }
+                        });
+                    }
+                    if (dbType == "travelagent") {
+                        var isValid = $("#f").valid();
+                        if (isValid == true) {
+                            var dbType = $("#f").data("db-type");
+                            var dbAction = $("#f").data("db-action");
+                            var controllerAction = $("#f").data("controller-action");
+                            console.log(`${dbType} ${dbAction} ${controllerAction}`);
+                            var data = $("#f").serialize();
+                            $.ajax({
+                                type: "POST",
+                                url: `/SinglePage/${controllerAction}`,
+                                data: data,
+                                success: r => {
+                                    if (dbAction == "insert") {
+                                        $("#toasthead").html("Success");
+                                        $("#toastbody").html("Data inserted successfully");
+                                        myModal.hide();
+                                        bsAlert.show();
+                                        addToTable(dbType, r);                                     
+                                    }
+                                    if (dbAction == "edit") {
+                                    $("#toasthead").html("Success");
+                                    $("#toastbody").html("Data saved successfully");
+                                    myModal.hide();
+                                    bsAlert.show();
+                                    replaceRow(dbType, `travelagent_tr_${r.travelAgentId}`, r);
+
+                                }
+                                myModal.hide();
+                                    
+                                }
+
+                            })
+                        }
+                    }
+                    if (dbType == "tourist") {
+                        $.ajax({
+                            url: `/SinglePage/${controllerAction}`,
+                            type: "POST",
+                            contentType: false, // Not to set any content header
+                            processData: false, // Not to process data
+                            data: data,
+                            success: function(result) {
+                                console.log(result);
+                                if (dbAction == "insert") {
+                                    $("#toasthead").html("Success");
+                                    $("#toastbody").html("Data inserted successfully");
+                                    bsAlert.show();
+                                    if (dbAction == 'insert') addToTable(dbType, result);
+
+                                }
+                                if (dbAction == "edit") {
+                                    $("#toasthead").html("Success");
+                                    $("#toastbody").html("Data saved successfully");
+                                    myModal.hide();
+                                    bsAlert.show();
+                                    replaceRow(dbType, `tourist_tr_${result.touristId}`, result);
+
+                                }
+                                myModal.hide();
+                            },
+                            error: function(err) {
+                                alert(err.statusText);
+                                $("#toastheader").html("Failed");
+                                $("#toastbody").html("Failed to insert data");
+                                bsAlert.show();
+                            }
+                        });
+                    }
+                    if (dbType == "agenttourpackage") {
+                            var isValid = $("#f").valid();
+                            console.log(isValid)
+                            if (isValid == true) {
+                                var dbType = $("#f").data("db-type");
+                                var dbAction = $("#f").data("db-action");
+                                var controllerAction = $("#f").data("controller-action");
+                                console.log(`${dbType} ${dbAction} ${controllerAction}`);
+                                var data = $("#f").serialize();
+                                $.ajax({
+                                    type: "POST",
+                                    url: `/SinglePage/${controllerAction}`,
+                                    data: data,
+                                    success: r => {
+                                        console.log(r);
+                                        $("#toasthead").html("Success");
+                                        $("#toastbody").html("Data inserted successfully");
+                                        myModal.hide();
+                                        bsAlert.show();
+                                        if (dbAction == 'insert') addToTable(dbType, r);
+                                        if (dbAction == "edit") {
+                                            $("#toasthead").html("Success");
+                                            $("#toastbody").html("Data saved successfully");
+                                            myModal.hide();
+                                            bsAlert.show();
+                                            replaceRow(dbType, `agenttourpackage_tr_${r.travelAgentId}_${r.tourPackageId}`, r);
+
+                                        }
+
+                                    }
+                                });
+                            }
+                        }
+                }
+            });
+            //Save click end
+            //Add more order item start
+            $(document).on("click", "button#addItemForm", () => {
+                $.ajax({
+                    type: 'GET',
+                    url: '/SinglePage/CreateAgentPackage',
+                    success: r => {
+
+                        $("div#items").append(r);
+
+                    }
+                })
+            });
+            //Add more order item end
+        });
+        //Function form data builder start
+        function createData(dbType, dbAction) {
+            if (dbType == "tourPackage") {
+                var obj = {
+                    PackageCategory: $("#PackageCategory").val(),
+                    PackageName: $("#PackageName").val(),
+                    CostPerPerson: $("#CostPerPerson").val(),
+                    TourTime: $("#TourTime").val()
+                };
+                if (dbAction != 'insert') obj.TourPackageId = $("#TourPackageId").val();
+                return obj;
+            }
+            if (dbType == "packageFeature") {
+                var obj = {
+                    TransportMode: $("#TransportMode").val(),
+                    HotelBooking: $("#HotelBooking").val(),
+                    Status: $("#Status").val(),
+                    TourPackageId: $("#TourPackageId").val()
+                };
+                if (dbAction != 'insert') obj.PackageFeatureId = $("#PackageFeatureId").val();
+                return obj;
+            }
+            if (dbType == "tourist") {
+                var formData = new FormData();
+                if (dbAction != 'insert') formData.append("TouristId", $("#TouristId").val());
+                formData.append("TouristName", $("#TouristName").val());
+                formData.append("BookingDate", $("#BookingDate").val());
+                formData.append("TouristOccupation", $("#TouristOccupation").val());
+                formData.append("TouristPicture", document.getElementById("TouristPicture").files[0]);
+                formData.append("TourPackageId", $("#TourPackageId").val());
+                return formData;
+            };
+        }
+        //Function replace row start
+        function replaceRow(dbType, rowid, r) {
+            //console.log(r);
+            if (dbType == 'tourPackage') {
+                $(`#${rowid}`).html(` <td>${getCategoryName(r.packageCategory)}</td>
+                                                                                                                          <td>${r.packageName}</td>
+                                                                                                                          <td>${r.costPerPerson}</td>
+                                                                                                                          <td>${r.tourTime}</td>
+                                                                                                                          <td>
+                                                                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="tourpackage" data-db-action="edit" data-tourpackage-id="${r.tourPackageId}" data-controller-action="EditTourPackage"><i class="bi bi-pencil"></i></button>
+                                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="tourpackage" data-db-action="delete" data-tourpackage-id="${r.tourPackageId}" data-controller-action="DeleteTourPackage"><i class="bi bi-trash"></i></button>
+                                                                </td>`);
+            }
+
+            if (dbType == "packageFeature") {
+                $(`#${rowid}`).html(` <td>${getTransportMode(r.transportMode)}</td>
+                                                                                                                          <td>${r.hotelBooking}</td>
+                                                                                                                          <td>${r.status}</td>
+                                                                                                                          <td>${r.tourPackage.packageName}</td>
+                                                                                                                          <td>
+                                                                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="packagefeature" data-db-action="edit" data-packagefeature-id="${r.packageFeatureId}" data-controller-action="EditPackageFeature"><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="packagefeature" data-db-action="delete" data-packagefeature-id="${r.packageFeatureId}" data-controller-action="DeletePackageFeature"><i class="bi bi-trash"></i></button>
+                                                                </td>`);
+            }
+            if (dbType == 'tourist') {
+                console.log($(`#${rowid}`));
+                $(`#${rowid}`).html(`<td style="width:50px"><img src="/Pictures/${r.touristPicture}" style="width:40px" class="img-thumbnail rounded-circle" /></td>
+                                                            <td>${r.touristName}</td>
+                                                            <td>${dateFormat(new Date(r.bookingDate))}</td>
+                                                            <td>${r.touristOccupation}</td>
+                                                            <td>${r.tourPackage.packageName}</td>
+                                                            <td>
+                                                                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="tourist" data-db-action="edit" data-tourist-id="${r.touristId}" data-controller-action="EditTourist"><i class="bi bi-pencil"></i></button>
+                                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="tourist" data-db-action="delete" data-tourist-id="${r.touristId}" data-controller-action="DeleteTourist"><i class="bi bi-trash"></i></button>
+                                                            </td>`);
+            }
+            if (dbType == 'travelagent') {
+                console.log($(`#${rowid}`));
+                $(`#${rowid}`).html(`<td style="width:50px"><button type="button" class="btn btn-secondary btn-sm select" data-travelagent-id="${r.travelAgentId}" >Select</button</td>
+                                                                        <td>${r.agentName}</td>
+                                                                          <td>${r.email}</td>
+                                                                          <td>${r.phoneNumber}</td>
+                                                                          <td>${r.agentAddress}</td>
+                                                                          <td>
+                                                                          <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="travelagent" data-db-action="edit" data-travelagent-id="${r.travelAgentId}" data-controller-action="EditTravelAgent"><i class="bi bi-pencil"></i></button>
+                                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="travelagent" data-db-action="delete" data-travelagent-id="${r.travelAgentId}" data-controller-action="DeleteTravelAgent"><i class="bi bi-trash"></i></button></td>`);
+            }
+            if (dbType == 'agenttourpackage') {
+                console.log($(`#${rowid}`));
+                $(`#${rowid}`).html(`<td style="width:50px"><button type="button" class="btn btn-sm select" data-travelagent-id="${r.travelAgentId}" >Select</button</td>
+                                                                        <td>${r.agentName}</td>
+                                                                          <td>${r.email}</td>
+                                                                          <td>${r.phoneNumber}</td>
+                                                                          <td>${r.agentAddress}</td>
+                                                                          <td>
+                                                                       <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="agenttourpackage" data-db-action="edit"  data-travelagent-id="${r.travelAgentId}" data-tourpackage-id="${r.tourPackageId}" data-controller-action="EditAgentTourPackages"><i class="bi bi-pencil"></i></button>
+                                                                        <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="agenttourpackage" data-db-action="delete" data-travelagent-id="${r.travelAgentId}" data-tourpackage-id="${r.tourPackageId}" data-controller-action="DeleteAgentTourPackages"><i class="bi bi-trash"></i></button>
+                                                                </td>`);
+            }
+        }
+        //Function replace row end
+        //Function form data builder end
+        //Function append to table start
+        function addToTable(dbType, r) {
+            //console.log(dbType);
+            //console.log(r);
+            if (dbType == "tourPackage") {
+                $(`#${dbType}Table tbody`).append(
+                    `<tr id="tourpackage_tr_${r.tourPackageId}">
+                                                                                                                            <td>${getCategoryName(r.packageCategory)}</td>
+                                                                                                                          <td>${r.packageName}</td>
+                                                                                                                          <td>${r.costPerPerson}</td>
+                                                                                                                          <td>${r.tourTime}</td>
+                                                                                                                          <td>
+                                                                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="tourpackage" data-db-action="edit" data-tourpackage-id="${r.tourPackageId}" data-controller-action="EditTourPackage"><i class="bi bi-pencil"></i></button>
+                                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="tourpackage" data-db-action="delete" data-tourpackage-id="${r.tourPackageId}" data-controller-action="DeleteTourPackage"><i class="bi bi-trash"></i></button>
+                                                                </td>
+                                                                                                                     </tr>`);
+            }
+            if (dbType == "packageFeature") {
+                $(`#${dbType}Table tbody`).append(
+                    `<tr id="packagefeature_tr_${r.packageFeatureId}">
+                                                                                                                            <td>${getTransportMode(r.transportMode)}</td>
+                                                                                                                          <td>${r.hotelBooking}</td>
+                                                                                                                          <td>${r.status}</td>
+                                                                                                                          <td>${r.tourPackage.packageName}</td>
+                                                                                                                          <td>
+                                                                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="packagefeature" data-db-action="edit" data-packagefeature-id="${r.packageFeatureId}" data-controller-action="EditPackageFeature"><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="packagefeature" data-db-action="delete" data-packagefeature-id="${r.packageFeatureId}" data-controller-action="DeletePackageFeature"><i class="bi bi-trash"></i></button>
+                                                                </td>
+                                                                                                                     </tr>`);
+            }
+            if (dbType == "tourist") {
+                $(`#${dbType}Table tbody`).append(
+                    `<tr id="tourist_tr_${r.touristId}">
+                                                                        <td style="width:50px"><img src="/Pictures/${r.touristPicture}" style="width:40px" class="img-thumbnail rounded-circle" /></td>
+                                                                        <td>${r.touristName}</td>
+                                                                          <td>${dateFormat(new Date(r.bookingDate))}</td>
+                                                                          <td>${r.touristOccupation}</td>
+                                                                          <td>${r.tourPackage.packageName}</td>
+                                                                          <td>
+                                                                          <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="tourist" data-db-action="edit" data-tourist-id="${r.touristId}" data-controller-action="EditTourist"><i class="bi bi-pencil"></i></button>
+                                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="tourist" data-db-action="delete" data-tourist-id="${r.touristId}" data-controller-action="DeleteTourist"><i class="bi bi-trash"></i></button></td>
+                                                                     </tr>`);
+            }
+            if (dbType == "travelagent") {
+                $(`#${dbType}Table tbody`).append(
+                    `<tr id="travelagent_tr_${r.travelAgentId}">
+                                                                        <td style="width:50px"><button type="button" class="btn btn-secondary btn-sm select" data-travelagent-id="${r.travelAgentId}" >Select</button</td>
+                                                                        <td>${r.agentName}</td>
+                                                                          <td>${r.email}</td>
+                                                                          <td>${r.phoneNumber}</td>
+                                                                          <td>${r.agentAddress}</td>
+                                                                          <td>
+                                                                          <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="travelagent" data-db-action="edit" data-travelagent-id="${r.travelAgentId}" data-controller-action="EditTravelAgent"><i class="bi bi-pencil"></i></button>
+                                                                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="travelagent" data-db-action="delete" data-travelagent-id="${r.travelAgentId}" data-controller-action="DeleteTravelAgent"><i class="bi bi-trash"></i></button></td>
+                                                                     </tr>`);
+            }
+            if (dbType == "agenttourpackage") {
+                $(`#${dbType}Table tbody`).append(
+                    `<tr id="agenttourpackage_tr_${r.travelAgentId}_${r.tourPackageId}"> 
+                                                                <td>${r.tourPackage.packageName}</td>
+                                                                <td>${r.tourPackage.costPerPerson}</td>
+                                                                <td>${r.tourPackage.tourTime}</td>
+                                                                <td>
+                                                                       <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="agenttourpackage" data-db-action="edit"  data-travelagent-id="${r.travelAgentId}" data-tourpackage-id="${r.tourPackageId}" data-controller-action="EditAgentTourPackages"><i class="bi bi-pencil"></i></button>
+                                                                        <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="agenttourpackage" data-db-action="delete" data-travelagent-id="${r.travelAgentId}" data-tourpackage-id="${r.tourPackageId}" data-controller-action="DeleteAgentTourPackages"><i class="bi bi-trash"></i></button>
+                                                                </td>
+                                                        </tr>`);
+
+            }
+            
+        }
+        //Function append to table end
+        function getCategoryName(pakagecategory) {
+            //console.log(status);
+
+            if (pakagecategory == '1') return 'Gold';
+            if (pakagecategory == '2') return 'Silver';
+            if (pakagecategory == '3') return 'Platinum';
+            if (pakagecategory == '4') return 'Express';
+            if (pakagecategory == '5') return 'Economy';
+            return '';
+
+        }
+        function getTransportMode(transportMode) {
+            //console.log(status);
+
+            if (transportMode == '1') return 'Bus';
+            if (transportMode == '2') return 'PrivateCar';
+            if (transportMode == '3') return 'CruiseShip';
+            if (transportMode == '4') return 'Plane';
+            if (transportMode == '5') return 'PrivateJet';
+            return '';
+
+        }
+        function dateFormat(d) {
+            return [
+                d.getFullYear(),
+                (d.getMonth() + 1).toString().padStart(2, '0'),
+                d.getDate().toString().padStart(2, '0')
+            ].join('-');
+        }
+                                       // public enum TransPortMode { Bus = 1, PrivateCar, CruiseShip, Plane, PrivateJet }
+                                        //public enum PakageCategory { Gold = 1, Silver, Platinum, Express, Economy }
+    </script>
+
+}
+

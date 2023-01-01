@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TourPackage>
+
+<table class="table table-bordered table-hover table-dark" id="tourPackageTable">
+    <thead >
+        <tr>
+            <th>PackageCategory</th>
+            <th>PackageName</th>
+            <th>CostPerPerson</th>
+            <th>Tour Time</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr id="tourpackage_tr_@p.TourPackageId">
+                <td>@p.PackageCategory</td>
+                <td>@p.PackageName</td> 
+                <td>@p.CostPerPerson</td>
+                <td>@p.TourTime</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="tourpackage" data-db-action="edit" data-tourpackage-id="@p.TourPackageId" data-controller-action="EditTourPackage"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="tourpackage" data-db-action="delete" data-tourpackage-id="@p.TourPackageId" data-controller-action="DeleteTourPackage"><i class="bi bi-trash"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

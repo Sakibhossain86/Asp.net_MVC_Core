@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <h1 class="display-4 fw-bold">Single Page Application With Master Details View</h1>
+                <ul>
+                <li>.NET Core 6.0</li>
+                <li>Vanila JavaScript</li>
+                <li>jQuery</li>
+                <li>Bootstrap 5.2.2</li>
+                <li>Bootstrap-icons 1.9.1</li>
+            </ul>
+                <a asp-action="Index" asp-controller="SinglePage" class="btn btn-primary">Go To Single Page</a>
+            </div>
+            <div class="col-sm-7">
+                <img class="img-fluid" src="~/Pictures/Screenshot_1.png" alt="" />
+            </div>
+        </div>
+    </div>
+</div>
+@section styles{
+    <style>
+        .banner {
+            background-color: #f8d49d;
+            width: 100%;
+            padding: 2em 0;
+        }
+
+        .row {
+            align-items: center;
+        }
+
+        h1 {
+            text-shadow: 1px 1px 2px #7c7c7c;
+        }
+
+        .btn {
+            padding: 0.5em 1.5em;
+            border-radius: 2em;
+            box-shadow: 5px 5px 5px rgba(105, 73, 73, 0.15);
+        }
+    </style>
+}
+    @*<div class="card text-white bg-secondary mb-3">
+    <div class="card-header px-3 py-2">
+        <h1 class="card-title display-4" >ASP.NET Core SPA Project</h1>
+        <h2 class="card-subtitle display-5">Implemented using JavsScript & jQuery</h2>
+    </div>
+
+    <div class="card-body p-4">
+        <div class="card-text">
+            <h3 class="display-6">Technoligies</h3>
+            <ul>
+                <li>.NET Core 6.0</li>
+                <li>Vanila JavaScript</li>
+                <li>jQuery</li>
+                <li>Bootstrap 5.2.2</li>
+                <li>Bootstrap-icons 1.9.1</li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="card-footer">
+        <a asp-action="Index" asp-controller="SPA" class="btn btn-primary">Go to SPA Page</a>
+    </div>
+</div>*@

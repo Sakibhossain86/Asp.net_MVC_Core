@@ -1,0 +1,105 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = SPA_TravelTour_Db_Application
+build_property.RootNamespace = SPA_TravelTour_Db_Application
+build_property.ProjectDir = D:\1268810\Asp.NetCoreMVC-main\SPA_TravelTour_Db_Application\SPA_TravelTour_Db_Application\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\1268810\Asp.NetCoreMVC-main\SPA_TravelTour_Db_Application\SPA_TravelTour_Db_Application
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Shared/_AgentTourPackageTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZ2VudFRvdXJQYWNrYWdlVGFibGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Shared/_PackageFeatureTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QYWNrYWdlRmVhdHVyZVRhYmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Shared/_TouristTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ub3VyaXN0VGFibGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Shared/_TourPackageTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ub3VyUGFja2FnZVRhYmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Shared/_TravelAgentTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9UcmF2ZWxBZ2VudFRhYmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_CreateAgentPackage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfQ3JlYXRlQWdlbnRQYWNrYWdlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_CreateAgentTourPackages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfQ3JlYXRlQWdlbnRUb3VyUGFja2FnZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_CreatePackageFeature.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfQ3JlYXRlUGFja2FnZUZlYXR1cmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_CreateTourist.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfQ3JlYXRlVG91cmlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_CreateTourPackage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfQ3JlYXRlVG91clBhY2thZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_CreateTravelAgent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfQ3JlYXRlVHJhdmVsQWdlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_EditAgentTourPackages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfRWRpdEFnZW50VG91clBhY2thZ2VzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_EditPackageFeature.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfRWRpdFBhY2thZ2VGZWF0dXJlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_EditTourist.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfRWRpdFRvdXJpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_EditTourPackage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfRWRpdFRvdXJQYWNrYWdlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/SinglePage/_EditTravelAgent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2luZ2xlUGFnZVxfRWRpdFRyYXZlbEFnZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1268810/Asp.NetCoreMVC-main/SPA_TravelTour_Db_Application/SPA_TravelTour_Db_Application/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

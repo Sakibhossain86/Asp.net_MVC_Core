@@ -1,0 +1,25 @@
+﻿@model AgentTourPackage
+
+<form id="f" name="f" data-db-type="agenttourpackage" data-db-action="edit" data-controller-action="EditAgentTourPackages">
+    
+    <input type="hidden" asp-for="TravelAgentId" />
+    <div class="form-group row mb-1">
+        <label asp-for="TravelAgentId" class="col-form-label col-form-label-sm col-2"></label>
+        <div class="col-4">
+            @ViewData["TravelAgentId"]
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label asp-for="TourPackageId" class="col-form-label col-form-label-sm col-2"></label>
+        <div class="col-4">
+            <select asp-for="TourPackageId" class="form-select form-select-sm added" asp-items="@(new SelectList(ViewData["TourPackage"] as IEnumerable<TourPackage>, "TourPackageId", "PackageName"))">
+                <option value="" selected>Select one</option>
+            </select>
+            <span asp-validation-for="TourPackageId" class="text-danger"></span>
+        </div>
+        <div class="col-1">
+            <button type="button" class="btn btn-sm deloi-insert"><i class="bi bi-trash"></i></button>
+        </div>
+    </div>
+</form>
+

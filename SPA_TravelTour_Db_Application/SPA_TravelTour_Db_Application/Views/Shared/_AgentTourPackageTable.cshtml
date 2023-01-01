@@ -1,0 +1,37 @@
+﻿@model IEnumerable<AgentTourPackage>
+
+<table  class="table table-bordered table-hover table-dark" id="agenttourpackageTable">
+    <thead >
+        <tr>  
+            <th>
+                @Html.DisplayNameFor(model => model.TourPackage.PackageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TourPackage.CostPerPerson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TourPackage.TourTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr  id="@($"agenttourpackage_tr_{@item.TravelAgentId}_{@item.TourPackageId}")">
+            <td>
+                @Html.DisplayFor(modelItem => item.TourPackage.PackageName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TourPackage.CostPerPerson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TourPackage.TourTime)
+            </td>
+            <td>
+                    <button type="button" class="btn btn-primary btn-sm rounded-circle edit" data-db-type="agenttourpackage" data-db-action="edit" data-travelagent-id="@item.TravelAgentId" data-tourpackage-id="@item.TourPackageId" data-controller-action="EditAgentTourPackages"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm rounded-circle del" data-db-type="agenttourpackage" data-db-action="delete" data-travelagent-id="@item.TravelAgentId" data-tourpackage-id="@item.TourPackageId" data-controller-action="DeleteAgentTourPackages"><i class="bi bi-trash"></i></button>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

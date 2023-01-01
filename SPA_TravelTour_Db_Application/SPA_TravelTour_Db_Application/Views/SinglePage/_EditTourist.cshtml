@@ -1,0 +1,48 @@
+﻿@model TouristEditModel
+<form id="f" name="f" data-db-type="tourist" data-db-action="edit" data-controller-action="EditTourist">
+    <div class="row">
+        <div class="col-9">
+            <input type="hidden" asp-for="TouristId" />
+            <div class="form-group row mb-1">
+                <label asp-for="TouristName" class="col-form-label col-3"></label>
+                <div class="col-9">
+                    <input asp-for="TouristName" class="form-control" />
+                    <span asp-validation-for="TouristName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <label asp-for="BookingDate" class="control-label col-3"></label>
+                <div class="col-9">
+                    <input type="text" asp-for="BookingDate" class="form-control date" />
+                    <span asp-validation-for="BookingDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <label asp-for="TouristOccupation" class="control-label col-3"></label>
+                <div class="col-9">
+                    <input asp-for="TouristOccupation" class="form-control col-2" />
+                    <span asp-validation-for="TouristOccupation" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <label asp-for="TouristPicture" class="control-label col-3"></label>
+                <div class="col-9">
+                    <input type="file" asp-for="TouristPicture" class="form-control col-2" />
+                    <span asp-validation-for="TouristPicture" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <label asp-for="TourPackage.PackageName" class="control-label col-2"></label>
+                <div class="col-10">
+                    <select asp-for="TourPackageId" class="form-select form-select-sm col-2" asp-items="ViewBag.TourPackage">
+                        <option value="" selected>Select</option>
+                    </select>
+                    <span asp-validation-for="TourPackageId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <img src="/Pictures/@ViewData["CurrentPic"]" style="width:150px" class="img-thumbnail" />
+        </div>
+    </div>
+</form>

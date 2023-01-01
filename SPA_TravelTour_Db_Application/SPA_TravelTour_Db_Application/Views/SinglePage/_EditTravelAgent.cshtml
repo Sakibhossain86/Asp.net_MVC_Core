@@ -1,0 +1,37 @@
+﻿@model TravelAgent
+<form id="f" name="f" data-db-type="travelagent" data-db-action="edit" data-controller-action="EditTravelAgent">
+    <input type="hidden" asp-for="TravelAgentId" />
+    <div class="form-group row mb-1">
+        <label asp-for="AgentName" class="col-form-label col-form-label-sm col-2"></label>
+        <div class="col-4">
+            <input  asp-for="AgentName" class="form-control form-control-sm ">
+            <span asp-validation-for="AgentName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mb-1">
+        <label asp-for="Email" class="col-form-label col-form-label-sm col-2"></label>
+        <div class="col-4">
+            <input  asp-for="Email" class="form-control form-control-sm ">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label asp-for="PhoneNumber" class="col-form-label col-form-label-sm col-2"></label>
+        <div class="col-4">
+            <input  asp-for="PhoneNumber" class="form-control form-control-sm ">
+
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label asp-for="AgentAddress" class="col-form-label col-form-label-sm col-2"></label>
+        <div class="col-4">
+            <input  asp-for="AgentAddress" class="form-control form-control-sm ">
+
+            <span asp-validation-for="AgentAddress" class="text-danger"></span>
+        </div>
+    </div>
+
+   
+</form>

@@ -1,0 +1,42 @@
+﻿@model TravelAgent
+<form id="f" name="f" data-db-type="travelagent" data-db-action="insert" data-controller-action="CreateTravelAgent">
+
+    <div class="form-group row mb-1">
+        <label asp-for="AgentName" class="col-form-label col-2"></label>
+        <div class="col-10">
+            <input asp-for="AgentName" class="form-control" />
+            <span asp-validation-for="AgentName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label asp-for="Email" class="control-label col-2"></label>
+        <div class="col-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label asp-for="PhoneNumber" class="control-label col-2"></label>
+        <div class="col-10">
+            <input asp-for="PhoneNumber" class="form-control col-2" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label asp-for="AgentAddress" class="control-label col-2"></label>
+        <div class="col-10">
+            <input asp-for="AgentAddress" class="form-control" />
+            <span asp-validation-for="AgentAddress" class="text-danger"></span>
+        </div>
+    </div>
+    <div id="items">
+        <div class="d-flex justify-content-between mb-1">
+            <h3>Items</h3>
+            <div><button type="button" class="btn btn-primary btn-sm" id="addItemForm"><i class="bi bi-plus"></i></button></div>
+        </div> 
+        @await Html.PartialAsync("_CreateAgentPackage", 
+        null,
+        new ViewDataDictionary(this.ViewData)
+         )
+    </div>
+</form>

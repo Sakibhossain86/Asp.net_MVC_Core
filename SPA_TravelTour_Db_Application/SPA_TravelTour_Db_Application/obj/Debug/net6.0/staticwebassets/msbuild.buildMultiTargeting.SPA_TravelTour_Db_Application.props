@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SPA_TravelTour_Db_Application.props" />
+</Project>
